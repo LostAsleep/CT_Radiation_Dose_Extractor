@@ -14,8 +14,10 @@ def define_basic_sg_layout():
     # fmt: off
     layout = [[sg.Text("Hier Dosis Information aus JiveX einfügen")],
               [sg.Multiline("", size=(40, 5), key="-TEXTFELD-")],
+              [sg.InputText("", size=(40, 1), key="-Mean-CTDIvol-"), sg.Text("mGy"), sg.Button("Copy", key="-CTDI-copy-")],
+              [sg.InputText("", size=(40, 1), key="-Dose-Length-Product-"), sg.Text("mGycm"), sg.Button("Copy", key="-DLP-copy-")],
               [sg.Button("Extrahieren"), sg.Button("Zwischenablage"), sg.Button("Text löschen")]]
-
+    # fmt: on
     window = sg.Window("CT radiation dose extractor", layout)
 
     return layout, window
@@ -49,7 +51,9 @@ def get_dose_values(dose_report):
             try:
                 CTDIvol_list.append(float(temp_list[0]))
             except ValueError:
-                print("You either double clicked on 'extract' or no CTDIvol in dose report.")
+                print(
+                    "You either double clicked on 'extract' or no CTDIvol in dose report."
+                )
     mean_CTDIvol = sum(CTDIvol_list)
 
     # Use the Decimal module to get correct decimal representation
@@ -76,9 +80,7 @@ def main():
             dose_report = values["-TEXTFELD-"]
             mean_CTDIvol, DLP_total = get_dose_values(dose_report)
             result_for_clipboard = f"{mean_CTDIvol} mGy\n{DLP_total} mGycm\n"
-            output_text = (
-                f"Mean CTDIvol (mGy): {mean_CTDIvol}\nDose Length Product (mGycm): {DLP_total}"
-            )
+            output_text = f"Mean CTDIvol (mGy): {mean_CTDIvol}\nDose Length Product (mGycm): {DLP_total}"
             window["-TEXTFELD-"].update(output_text)
 
         if event == "Zwischenablage":
