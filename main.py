@@ -19,7 +19,9 @@ class CTRadiationDoseExtractor(object):
         self.DLP_total.set(0)
 
         # 1st row
-        ttk.Label(mainframe, text="Hier Dosis Information aus JiveX einfügen").grid(
+        ttk.Label(
+            mainframe, text="Hier Dosis Information aus JiveX einfügen"
+        ).grid(
             column=0,
             row=0,
             columnspan=3,
