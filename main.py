@@ -7,6 +7,10 @@ import pyperclip
 class CTRadiationDoseExtractor(object):
     def __init__(self, root):
         root.title("CT Radiation Dose Extractor")
+        # Set the Window Icon
+        root.tk.call(
+            "wm", "iconphoto", root._w, tk.PhotoImage(file="./skull_icon.png")
+        )
 
         mainframe = ttk.Frame(root, padding="5 5 5 5")
         mainframe.grid(column=0, row=0, sticky=("n w e s"))
