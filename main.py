@@ -1,10 +1,7 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 from decimal import Decimal
 import pyperclip
-
-
-FONT = "Arial"
 
 
 class CTRadiationDoseExtractor(object):
@@ -12,61 +9,72 @@ class CTRadiationDoseExtractor(object):
         root.title("CT Radiation Dose Extractor")
 
         mainframe = ttk.Frame(root, padding="5 5 5 5")
-        mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+        mainframe.grid(column=0, row=0, sticky=("n w e s"))
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
 
-        self.mean_CTDIvol = 0
-        self.DLP_total = 0
+        self.mean_CTDIvol = tk.StringVar()
+        self.mean_CTDIvol.set(0)
+        self.DLP_total = tk.StringVar()
+        self.DLP_total.set(0)
 
         # First row, big text input field
-        self.dose_input = StringVar()
-        input_field = Text(mainframe, width=45, height=5).grid(
+        self.input_field = tk.Text(mainframe, width=45, height=5)
+        self.input_field.grid(
             column=0,
             row=0,
             columnspan=3,
-            sticky=(W, N, E, S),
+            sticky=("n w e s"),
         )
 
         # Second row - CTDI
         ttk.Label(mainframe, text="Mean CTDIvol (mGy):").grid(
-            column=0, row=1, sticky=W
+            column=0, row=1, sticky="w"
         )
-        CTDI_text = ttk.Label(mainframe, textvariable=self.mean_CTDIvol).grid(
-            column=1, row=1, sticky=E
-        )
+        ttk.Label(
+            mainframe,
+            width=10,
+            textvariable=self.mean_CTDIvol,
+            anchor="center",
+        ).grid(column=1, row=1)
         ttk.Button(
             mainframe,
             text="Copy",
-            command=lambda: pyperclip.copy(self.mean_CTDIvol),
-        ).grid(column=2, row=1, sticky=(W, N, E, S))
+            command=lambda: pyperclip.copy(self.mean_CTDIvol.get()),
+        ).grid(column=2, row=1, sticky=("n w e s"))
 
         # Third row - DLP
         ttk.Label(mainframe, text="Dose Length Product (mGycm):").grid(
-            column=0, row=2, sticky=W
+            column=0, row=2, sticky="w"
         )
-        DLP_text = ttk.Label(mainframe, textvariable=self.DLP_total).grid(
-            column=1, row=2, sticky=E
-        )
+        ttk.Label(
+            mainframe, width=10, textvariable=self.DLP_total, anchor="center"
+        ).grid(column=1, row=2)
         ttk.Button(
             mainframe,
             text="Copy",
-            command=lambda: pyperclip.copy(self.DLP_total),
-        ).grid(column=2, row=2, sticky=(W, N, E, S))
+            command=lambda: pyperclip.copy(self.DLP_total.get()),
+        ).grid(column=2, row=2, sticky=("n w e s"))
 
         # Fourth row - Extract and Clear Button
-        ttk.Button(mainframe, text="Extract").grid(
+        ttk.Button(
+            mainframe,
+            text="Extract",
+            command=lambda: self.get_dose_values(
+                self.input_field.get("1.0", "end")
+            ),
+        ).grid(
             column=0,
             row=3,
             columnspan=2,
-            sticky=(W, N, E, S),
+            sticky=("n w e s"),
         )
-        ttk.Button(mainframe, text="Clear").grid(
-            column=2, row=3, sticky=(W, N, E, S)
-        )
+        ttk.Button(
+            mainframe, text="Clear", command=lambda: self.clear_fields()
+        ).grid(column=2, row=3, sticky=("n w e s"))
 
     def get_dose_values(self, dose_report):
-        """Extracting the DLP total and CTDIvol 
+        """Extracting the DLP total and CTDIvol
         from a standard JiveX CT dose report.
 
         Args:
@@ -102,18 +110,20 @@ class CTRadiationDoseExtractor(object):
         mean_CTDIvol = sum(CTDIvol_list)
 
         # Use the Decimal module to get correct decimal representation
-        # and use the Decimal.quantize() method to round to two decimal places
-        mean_CTDIvol = Decimal(str(mean_CTDIvol)).quantize(Decimal("1.00"))
-        DLP_total = Decimal(str(DLP_total)).quantize(Decimal("1.00"))
+        # and use the Decimal.quantize() method to round the number.
+        mean_CTDIvol = Decimal(str(mean_CTDIvol)).quantize(Decimal("1"))
+        DLP_total = Decimal(str(DLP_total)).quantize(Decimal("1"))
 
-        self.mean_CTDIvol = mean_CTDIvol
-        self.DLP_total = DLP_total
+        self.mean_CTDIvol.set(mean_CTDIvol)
+        self.DLP_total.set(DLP_total)
 
     def clear_fields(self):
-        pass
+        self.mean_CTDIvol.set(0)
+        self.DLP_total.set(0)
+        self.input_field.delete("1.0", "end")
 
 
 if __name__ == "__main__":
-    root = Tk()
+    root = tk.Tk()
     CTRadiationDoseExtractor(root)
     root.mainloop()
