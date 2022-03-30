@@ -24,7 +24,7 @@ class CTRadiationDoseExtractor(object):
 
         # 1st row
         ttk.Label(
-            mainframe, text="Hier Dosis Information aus JiveX einfügen"
+            mainframe, text="Paste here the JiveX Dose Report:"
         ).grid(
             column=0,
             row=0,
@@ -94,8 +94,8 @@ class CTRadiationDoseExtractor(object):
         Args:
             dose_report (string): A multiline string
 
-        Updates class variables with the extracted mean CTDIvol
-        and total dose length product, rounded to two decimal places.
+        Updates class variables with the rounded
+        extracted mean CTDIvol and total dose length product.
         """
         DR_lines = dose_report.split("\n")
         num_lines = len(DR_lines)
