@@ -14,8 +14,6 @@ def define_basic_sg_layout():
     # fmt: off
     layout = [[sg.Text("Hier Dosis Information aus JiveX einfügen")],
               [sg.Multiline("", size=(40, 5), key="-TEXTFELD-")],
-              [sg.InputText("", size=(40, 1), key="-Mean-CTDIvol-"), sg.Text("mGy"), sg.Button("Copy", key="-CTDI-copy-")],
-              [sg.InputText("", size=(40, 1), key="-Dose-Length-Product-"), sg.Text("mGycm"), sg.Button("Copy", key="-DLP-copy-")],
               [sg.Button("Extrahieren"), sg.Button("Zwischenablage"), sg.Button("Text löschen")]]
     # fmt: on
     window = sg.Window("CT radiation dose extractor", layout)
