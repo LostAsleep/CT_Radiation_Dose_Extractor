@@ -18,45 +18,53 @@ class CTRadiationDoseExtractor(object):
         self.DLP_total = tk.StringVar()
         self.DLP_total.set(0)
 
-        # First row, big text input field
-        self.input_field = tk.Text(mainframe, width=45, height=5)
-        self.input_field.grid(
+        # 1st row
+        ttk.Label(mainframe, text="Hier Dosis Information aus JiveX einfügen").grid(
             column=0,
             row=0,
             columnspan=3,
             sticky=("n w e s"),
         )
 
-        # Second row - CTDI
+        # 2nd row, big text input field
+        self.input_field = tk.Text(mainframe, width=45, height=5)
+        self.input_field.grid(
+            column=0,
+            row=1,
+            columnspan=3,
+            sticky=("n w e s"),
+        )
+
+        # 3rd row - CTDI
         ttk.Label(mainframe, text="Mean CTDIvol (mGy):").grid(
-            column=0, row=1, sticky="w"
+            column=0, row=2, sticky="w"
         )
         ttk.Label(
             mainframe,
             width=10,
             textvariable=self.mean_CTDIvol,
             anchor="center",
-        ).grid(column=1, row=1)
-        ttk.Button(
-            mainframe,
-            text="Copy",
-            command=lambda: pyperclip.copy(self.mean_CTDIvol.get()),
-        ).grid(column=2, row=1, sticky=("n w e s"))
-
-        # Third row - DLP
-        ttk.Label(mainframe, text="Dose Length Product (mGycm):").grid(
-            column=0, row=2, sticky="w"
-        )
-        ttk.Label(
-            mainframe, width=10, textvariable=self.DLP_total, anchor="center"
         ).grid(column=1, row=2)
         ttk.Button(
             mainframe,
             text="Copy",
-            command=lambda: pyperclip.copy(self.DLP_total.get()),
+            command=lambda: pyperclip.copy(self.mean_CTDIvol.get()),
         ).grid(column=2, row=2, sticky=("n w e s"))
 
-        # Fourth row - Extract and Clear Button
+        # 4th row - DLP
+        ttk.Label(mainframe, text="Dose Length Product (mGycm):").grid(
+            column=0, row=3, sticky="w"
+        )
+        ttk.Label(
+            mainframe, width=10, textvariable=self.DLP_total, anchor="center"
+        ).grid(column=1, row=3)
+        ttk.Button(
+            mainframe,
+            text="Copy",
+            command=lambda: pyperclip.copy(self.DLP_total.get()),
+        ).grid(column=2, row=3, sticky=("n w e s"))
+
+        # 5th row - Extract and Clear Button
         ttk.Button(
             mainframe,
             text="Extract",
@@ -65,13 +73,13 @@ class CTRadiationDoseExtractor(object):
             ),
         ).grid(
             column=0,
-            row=3,
+            row=4,
             columnspan=2,
             sticky=("n w e s"),
         )
         ttk.Button(
             mainframe, text="Clear", command=lambda: self.clear_fields()
-        ).grid(column=2, row=3, sticky=("n w e s"))
+        ).grid(column=2, row=4, sticky=("n w e s"))
 
     def get_dose_values(self, dose_report):
         """Extracting the DLP total and CTDIvol
