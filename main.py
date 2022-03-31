@@ -4,12 +4,15 @@ from decimal import Decimal
 import pyperclip
 
 
+SKULL_ICON = "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"
+
+
 class CTRadiationDoseExtractor(object):
     def __init__(self, root):
         root.title("CT Radiation Dose Extractor")
         # Set the Window Icon
         root.tk.call(
-            "wm", "iconphoto", root._w, tk.PhotoImage(file="./skull_icon.png")
+            "wm", "iconphoto", root._w, tk.PhotoImage(data=SKULL_ICON)
         )
 
         mainframe = ttk.Frame(root, padding="5 5 5 5")
