@@ -1,6 +1,5 @@
 venv/
 tkinter-testing/
 main.spec
-dist/
 build/
 __pycache__
