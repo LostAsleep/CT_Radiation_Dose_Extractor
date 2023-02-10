@@ -142,5 +142,6 @@ class CTRadiationDoseExtractor(object):
 
 if __name__ == "__main__":
     root = tk.Tk()
+    root.resizable(False, False)
     CTRadiationDoseExtractor(root)
     root.mainloop()
